@@ -1,30 +1,40 @@
-def encrypt_vigenere(plaintext: str, keyword: str) -> str:
-    """
-    Encrypts plaintext using a Vigenere cipher.
+import string
 
-    >>> encrypt_vigenere("PYTHON", "A")
-    'PYTHON'
-    >>> encrypt_vigenere("python", "a")
-    'python'
-    >>> encrypt_vigenere("ATTACKATDAWN", "LEMON")
-    'LXFOPVEFRNHR'
-    """
+
+def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     ciphertext = ""
-    # PUT YOUR CODE HERE
+    alphabet_high = string.ascii_uppercase
+    alphabet_low = string.ascii_lowercase
+    len_key = len(keyword)
+
+    for i in range(len(plaintext)):
+        if plaintext[i] in alphabet_high:
+            shift = ord(keyword[i % len_key]) - ord("A")
+            ciphertext += alphabet_high[(alphabet_high.find(plaintext[i]) + shift) % 26]
+        elif plaintext[i] in alphabet_low:
+            shift = ord(keyword[i % len_key]) - ord("a")
+            ciphertext += alphabet_low[(alphabet_low.find(plaintext[i]) + shift) % 26]
+        else:
+            ciphertext += plaintext[i]
     return ciphertext
 
 
-def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
-    """
-    Decrypts a ciphertext using a Vigenere cipher.
+def decrypt_vigenere(plaintext: str, keyword: str) -> str:
+    ciphertext = ""
+    alphabet_high = string.ascii_uppercase
+    alphabet_low = string.ascii_lowercase
+    len_key = len(keyword)
 
-    >>> decrypt_vigenere("PYTHON", "A")
-    'PYTHON'
-    >>> decrypt_vigenere("python", "a")
-    'python'
-    >>> decrypt_vigenere("LXFOPVEFRNHR", "LEMON")
-    'ATTACKATDAWN'
-    """
-    plaintext = ""
-    # PUT YOUR CODE HERE
-    return plaintext
+    for i in range(len(plaintext)):
+        if plaintext[i] in alphabet_high:
+            shift = ord(keyword[i % len_key]) - ord("A")
+            ciphertext += alphabet_high[(alphabet_high.find(plaintext[i]) - shift) % 26]
+        elif plaintext[i] in alphabet_low:
+            shift = ord(keyword[i % len_key]) - ord("a")
+            ciphertext += alphabet_low[(alphabet_low.find(plaintext[i]) - shift) % 26]
+        else:
+            ciphertext += plaintext[i]
+    return ciphertext
+
+
+print(decrypt_vigenere("LEMONLEMONLE", "ATTACKATDAWN"))
